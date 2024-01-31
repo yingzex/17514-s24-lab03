@@ -3,11 +3,13 @@ package edu.cmu.cs.cs214.rec02;
 import java.util.Arrays;
 
 /**
- * A resizable-array implementation of the {@link IntQueue} interface. The head of
+ * A resizable-array implementation of the {@link IntQueue} interface. The head
+ * of
  * the queue starts out at the head of the array, allowing the queue to grow and
  * shrink in constant time.
  *
- * TODO: This implementation contains three bugs! Use your tests to determine the
+ * TODO: This implementation contains three bugs! Use your tests to determine
+ * the
  * source of the bugs and correct them!
  *
  * @author Alex Lockwood
@@ -73,11 +75,14 @@ public class ArrayIntQueue implements IntQueue {
 
     /** {@inheritDoc} */
     public boolean isEmpty() {
-        return size >= 0;
+        return size == 0;
     }
 
     /** {@inheritDoc} */
     public Integer peek() {
+        if (isEmpty()) {
+            return null;
+        }
         return elementData[head];
     }
 
@@ -91,18 +96,29 @@ public class ArrayIntQueue implements IntQueue {
      * necessary, to ensure that it can hold at least size + 1 elements.
      */
     private void ensureCapacity() {
+        // if (size == elementData.length) {
+        // int oldCapacity = elementData.length;
+        // int newCapacity = 2 * oldCapacity + 1;
+        // int[] newData = new int[newCapacity];
+        // for (int i = head; i < oldCapacity; i++) {
+        // newData[i - head] = elementData[i];
+        // }
+        // for (int i = 0; i < head; i++) {
+        // newData[head - i] = elementData[i];
+        // }
+        // elementData = newData;
+        // head = 0;
+        // }
+
         if (size == elementData.length) {
             int oldCapacity = elementData.length;
             int newCapacity = 2 * oldCapacity + 1;
             int[] newData = new int[newCapacity];
-            for (int i = head; i < oldCapacity; i++) {
-                newData[i - head] = elementData[i];
-            }
-            for (int i = 0; i < head; i++) {
-                newData[head - i] = elementData[i];
+            for (int i = 0; i < size; i++) { // Correctly copy elements in order
+                newData[i] = elementData[(head + i) % oldCapacity];
             }
             elementData = newData;
-            head = 0;
+            head = 0; // Reset head as elements are now starting from 0
         }
     }
 }
